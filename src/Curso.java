@@ -1,34 +1,44 @@
-import java.util.*;
-
 public class Curso {
-    private int id;
-    private String nombre;
-    private String descripcion;
+    private int idCurso;
+    private String nombreCurso;
+    private String descripcionCurso;
     private int numeroCreditos;
-    private int version;
+    private int versionCurso;
 
-    public int getId() {
-        return id;
+    public Curso(int idCurso, String nombreCurso, String descripcionCurso, int numeroCreditos, int versionCurso) {
+        this.idCurso = idCurso;
+        this.nombreCurso = nombreCurso;
+        this.descripcionCurso = descripcionCurso;
+        this.numeroCreditos = numeroCreditos;
+        this.versionCurso = versionCurso;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Curso() {
+        return;
+    }
+
+    public int getId() {
+        return idCurso;
+    }
+
+    public void setId(int idDelCurso) {
+        this.idCurso = idDelCurso;
     }
 
     public String getNombre() {
-        return nombre;
+        return nombreCurso;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String nombreDelCurso) {
+        this.nombreCurso = nombreDelCurso;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return descripcionCurso;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescripcion(String descripcionDelCurso) {
+        this.descripcionCurso = descripcionDelCurso;
     }
 
     public int getNumeroCreditos() {
@@ -40,10 +50,15 @@ public class Curso {
     }
 
     public int getVersion() {
-        return version;
+        return versionCurso;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setVersion(int versionDelCurso) {
+        this.versionCurso = versionDelCurso;
+    }
+
+    @Override
+    public String toString() {
+        return "Curso{" + "id= " + idCurso + ", nombre= " + nombreCurso + ", descripcion= " + descripcionCurso + ", version= " + versionCurso + '}';
     }
 }
