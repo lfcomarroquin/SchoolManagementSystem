@@ -7,6 +7,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Bienvenido a tu gestor academico!");
+        //Cambiar por boolean
         while (true) {
             System.out.println("Por favor, selecciona una opcion:");
             System.out.println("1. Gestionar estudiantes");
