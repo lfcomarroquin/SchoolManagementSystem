@@ -1,29 +1,45 @@
-import java.util.*;
+public class Estudiante extends Persona{
+    int idEstudiante;
 
-public class Estudiante extends Persona {
-    private State estado;
-
-    public Estudiante(int id, String nombre, String apellido, Date fechaNacimiento, State estado) {
-        super(id, nombre, apellido, fechaNacimiento);
-        this.estado = estado;
+    //Constructor
+    public Estudiante(int idEstudiante, String nombre, String apellido, String fechaNacimiento) {
+        super(nombre, apellido, String.valueOf(fechaNacimiento));
+        this.idEstudiante = idEstudiante;
     }
 
-    public State getEstado() {
-        return estado;
+    //Getter
+    public int getIdEstudiante() {
+        return idEstudiante;
     }
 
-    public void setEstado(State estado) {
-        this.estado = estado;
+    public String getNombrePersona() {
+        return getNombrePersona();
     }
 
-    public enum State{
-        MATRICULADO,
-        INACTIVO,
-        GRADUADO
+    public String getApellidoPersona() {
+        return getApellidoPersona();
     }
 
-    @Override
-    public String toString() {
-        return "Estudiante {" + "id= " + idEstudiante + ", nombre= " + nombreEstudiante + '\'' + ", apellido= " + apellidoEstudiante + ", fechaNacimiento= " + fechaNacimiento + ", estado= " + estado + '}';
+    public String getFechaNacimientoPersona() {
+        return getFechaNacimientoPersona();
     }
+    //Getter
+
+    //Setter
+    public void setIdEstudiante(int idEstudiante) {
+        this.idEstudiante = idEstudiante;
+    }
+
+    public void setNombreEstudiante(String nombreEstudiante) {
+        setNombrePersona(nombreEstudiante);
+    }
+
+    public void setApellidoEstudiante(String apellidoEstudiante) {
+        setApellidoPersona(apellidoEstudiante);
+    }
+
+    public void setFechaNacimientoEstudiante(String fechaNacimientoEstudiante) {
+        setFechaNacimientoPersona(fechaNacimientoEstudiante);
+    }
+    //Setter
 }

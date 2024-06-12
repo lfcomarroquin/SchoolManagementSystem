@@ -1,108 +1,118 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GestorAcademico implements ServiciosAcademicosI {
-    private ArrayList<Estudiante> estudiantes = new ArrayList<>();
-    private ArrayList<Curso> cursos = new ArrayList<>();
-    private HashMap<Curso, ArrayList<Estudiante>> inscripciones = new HashMap<>();
 
-    @Override
-    public void matricularEstudiante(Estudiante estudiante) throws Exceptions.EstudianteYaMatriculadoException {
-        for (Estudiante e : estudiantes) {
-            if (e.getId() == estudiante.getId()) {
-                throw new Exceptions.EstudianteYaMatriculadoException("El estudiante con ID " + estudiante.getId() + " ya esta matriculado.");
-            }
-        }
-        estudiantes.add(estudiante);
+    //Atributos que son ArrayLists
+    private ArrayList<Estudiante> estudiantes;
+    private ArrayList<Curso> cursos;
+    private HashMap<Curso, ArrayList<Estudiante>> inscripciones;
+
+    //Constructor
+    public GestorAcademico() {
+        this.inscripciones = new HashMap<>();
+
+        this.estudiantes = new ArrayList<>();
+
+        //Aca se crea el formato para parsear las fechas
+        //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.US);
+
+        //Aca se crea a los estudiantes predefinidos
+        Estudiante estudiantePredefinido1 = new Estudiante(1, "Luis", "Marroquin", "3/12/1987");
+        Estudiante estudiantePredefinido2 = new Estudiante(2, "Karin", "Lopez", "17/07/1983");
+
+        //Aca se agregan esos estudiantes predefinidos al ArrayList
+        this.estudiantes.add(estudiantePredefinido1);
+        this.estudiantes.add(estudiantePredefinido2);
+
+
+        this.cursos = new ArrayList<>();
+        //Aca se crean los cursos predefinidos
+        Curso cursoPredefinido1 = new Curso(101,"Java Backend","Programacion Java con Springboot",3,"1.0.0");
+        Curso cursoPredefinido2 = new Curso(102,"Cisco Ethical Hacker","Ciberseguridad con Cisco Ethical Hacker",3,"1.0.0");
+
+        //Aca se agregan esos cursos predefinidos al ArrayList
+        this.cursos.add(cursoPredefinido1);
+        this.cursos.add(cursoPredefinido2);
     }
 
-    @Override
-    public void agregarCurso(Curso curso) throws Exceptions.CursoYaCreadoException {
-        for (Curso c : cursos) {
-            if (c.getId() == curso.getId()) {
-                throw new Exceptions.CursoYaCreadoException("El curso con ID " + curso.getId() + " ya existe");
+    //Metodo que devuelve un estudiante por ID
+    public Estudiante obtenerEstudiantePorID(int idDelEstudiante) {
+        for (Estudiante estudiante : this.estudiantes) {
+            if (estudiante.getIdEstudiante() == idDelEstudiante) {
+                return estudiante;
             }
         }
-        cursos.add(curso);
+        return null;
     }
 
-    @Override
-    public void inscribirEstudianteCurso(Estudiante estudiante, int idCurso) throws Exceptions.EstudianteYaInscritoException, Exceptions.CursoNoValidoException {
-        Curso curso = null;
-        for (Curso c : cursos) {
-            if (c.getId() == idCurso) {
-                curso = c;
-                break;
+    //Metodo que devuelve un curso por ID
+    public Curso obtenerCursoPorID(int idDelCurso) {
+        for (Curso curso : this.cursos) {
+            if (curso.getIdCurso() == idDelCurso) {
+                return curso;
             }
         }
-        if (curso == null) {
-            throw new Exceptions.CursoNoValidoException("El curso con ID " + idCurso + " no es valido");
-        }
-        ArrayList<Estudiante> estudiantesIncritos = inscripciones.get(curso);
-        if (estudiantesIncritos != null && estudiantesIncritos.contains(estudiante)) {
-            throw new Exceptions.EstudianteYaInscritoException("El estudiante con ID " + estudiante.getId() + " ya esta incrito en el curso con ID " + idCurso + ".");
-        }
-        if (estudiantesIncritos == null) {
-            estudiantesIncritos = new ArrayList<>();
-            inscripciones.put(curso, estudiantesIncritos);
-        }
-        estudiantesIncritos.add(estudiante);
+        return null;
     }
 
+    //Metodo para agregar un estudiante a un curso especifico
     @Override
-    public void desinscribirEstudianteCurso(int idEstudiante, int idCurso) throws Exceptions.EstudianteNoInscritoException, Exceptions.CursoNoValidoException {
-        Curso curso = null;
-        for (Curso c : cursos) {
-            if (c.getId() == idCurso) {
-                curso = c;
-                break;
-            }
+    public void inscribirEstudianteACurso(Curso curso, Estudiante estudiante) throws EstudianteYaInscritoException {
+        ArrayList<Estudiante> estudiantesInscritos = this.inscripciones.get(curso);
+        if (estudiantesInscritos == null) {
+            estudiantesInscritos = new ArrayList<>();
+            this.inscripciones.put(curso, estudiantesInscritos);
+        } else if (estudiantesInscritos.contains(estudiante)) {
+            throw new EstudianteYaInscritoException("El estudiante ya esta inscrito en este curso");
         }
-        if (curso == null) {
-            throw new Exceptions.CursoNoValidoException("El curso con ID " + idCurso + " no es valido");
-        }
-        Estudiante estudiante = null;
-        for (Estudiante e : estudiantes) {
-            if (e.getId() == idEstudiante) {
-                estudiante = e;
-                break;
-            }
-        }
-        if (estudiante == null) {
-            throw new Exceptions.EstudianteNoInscritoException("El estudiante con ID " + idEstudiante + " no esta inscrito en ningun curso.");
-        }
+        estudiantesInscritos.add(estudiante);
+    }
 
-        ArrayList<Estudiante> estudiantesIncritos = inscripciones.get(curso);
-        if (estudiantesIncritos == null || !estudiantesIncritos.remove(estudiante)) {
-            throw new Exceptions.EstudianteNoInscritoException("El estudiante con ID " + idEstudiante + " no esta inscrito en el curso con ID " + idCurso + ".");
+    //Metodo para eliminar un estudiante de un curso especifico
+    @Override
+    public void desinscribirEstudianteACurso(Curso curso, Estudiante estudiante) throws EstudianteNoInscritoEnCursoException {
+        ArrayList<Estudiante> estudiantesInscritos = this.inscripciones.get(curso);
+        if (estudiantesInscritos != null && estudiantesInscritos.contains(estudiante)) {
+            estudiantesInscritos.remove(estudiante);
+        } else {
+            throw new EstudianteNoInscritoEnCursoException("El estudiante no esta inscrito en este curso");
         }
     }
 
+    //Metodo para añadir un nuevo curso a la lista
+    @Override
+    public void agregarCurso(Curso curso) {
+        this.cursos.add(curso);
+    }
 
+    //Metodo para añadir un estudiante
+    @Override
     public void agregarEstudiante(Estudiante estudiante) {
-        estudiantes.add(estudiante);
+        this.estudiantes.add(estudiante);
     }
 
-    public void inscribirEstudianteACurso(Estudiante estudiante, Curso curso) {
-        ArrayList<Estudiante> estudiantesIncritos = inscripciones.get(curso);
-        if (estudiantesIncritos == null) {
-            estudiantesIncritos = new ArrayList<>();
-            inscripciones.put(curso, estudiantesIncritos);
-        }
-        estudiantesIncritos.add(estudiante);
+    public ArrayList<Estudiante> getEstudiantes() {
+        return estudiantes;
     }
 
-    public ArrayList<Estudiante> obtenerEstudiantesIncritos(String curso) {
-        return inscripciones.get(curso);
+    public void setEstudiantes(ArrayList<Estudiante> estudiantes) {
+        this.estudiantes = estudiantes;
     }
 
-    public ArrayList<Curso> obtenerCursosDeEstudiante(Estudiante estudiante) {
-        ArrayList<Curso> cursosDelEstudiantes = new ArrayList<>();
-        for (Curso curso : inscripciones.keySet()) {
-            ArrayList<Estudiante> estudiantesIncritos = inscripciones.get(curso);
-            if (estudiantesIncritos.contains(estudiante)) {
-                cursosDelEstudiantes.add(curso);
-            }
-        }
-        return cursosDelEstudiantes;
+    public ArrayList<Curso> getCursos() {
+        return cursos;
     }
- }
+
+    public void setCursos(ArrayList<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    public HashMap<Curso, ArrayList<Estudiante>> getInscripciones() {
+        return inscripciones;
+    }
+
+    public void setInscripciones(HashMap<Curso, ArrayList<Estudiante>> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
+}

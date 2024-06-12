@@ -1,2 +1,2 @@
-101,NTCL - Java,Java Backend Spring Boot Developer Mid Level,3,1
-102,Cybersecurity,Cisco Ethical Hacker,3,1
+101,NTCL - Java,Java Backend Spring Boot Developer Mid Level,3,1.0.0
+102,Cybersecurity,Cisco Ethical Hacker,3,1.0.2

@@ -1,11 +1,13 @@
 public class Curso {
+    //Atributos
     private int idCurso;
     private String nombreCurso;
     private String descripcionCurso;
     private int numeroCreditos;
-    private int versionCurso;
+    private String versionCurso;
 
-    public Curso(int idCurso, String nombreCurso, String descripcionCurso, int numeroCreditos, int versionCurso) {
+    //Constructor
+    public Curso(int idCurso, String nombreCurso, String descripcionCurso, int numeroCreditos, String versionCurso) {
         this.idCurso = idCurso;
         this.nombreCurso = nombreCurso;
         this.descripcionCurso = descripcionCurso;
@@ -13,52 +15,30 @@ public class Curso {
         this.versionCurso = versionCurso;
     }
 
-    public Curso() {
-        return;
+    //Metodo Curso (Ejemplo)
+    public void crearCurso() {
+        System.out.println("El curso " + nombreCurso + " ha sido creado con el id " + idCurso);
     }
 
-    public int getId() {
-        return idCurso;
-    }
-
-    public void setId(int idDelCurso) {
-        this.idCurso = idDelCurso;
-    }
-
-    public String getNombre() {
+    //Getters
+    public String getNombreCurso() {
         return nombreCurso;
     }
 
-    public void setNombre(String nombreDelCurso) {
-        this.nombreCurso = nombreDelCurso;
+    public int getIdCurso() {
+        return idCurso;
     }
 
-    public String getDescripcion() {
+    public String getDescripcionCurso() {
         return descripcionCurso;
-    }
-
-    public void setDescripcion(String descripcionDelCurso) {
-        this.descripcionCurso = descripcionDelCurso;
     }
 
     public int getNumeroCreditos() {
         return numeroCreditos;
     }
 
-    public void setNumeroCreditos(int numeroCreditos) {
-        this.numeroCreditos = numeroCreditos;
-    }
-
-    public int getVersion() {
+    public String getVersionCurso() {
         return versionCurso;
     }
-
-    public void setVersion(int versionDelCurso) {
-        this.versionCurso = versionDelCurso;
-    }
-
-    @Override
-    public String toString() {
-        return "Curso{" + "id= " + idCurso + ", nombre= " + nombreCurso + ", descripcion= " + descripcionCurso + ", version= " + versionCurso + '}';
-    }
+    //Getters
 }
