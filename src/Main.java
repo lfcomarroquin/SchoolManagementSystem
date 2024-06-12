@@ -1,53 +1,182 @@
-import java.util.Date;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear instancias de Estudiante
-        Estudiante estudiante1 = new Estudiante(1, "Juan", "Pérez", new Date(), Estudiante.State.MATRICULADO);
-        Estudiante estudiante2 = new Estudiante(2, "Ana", "García", new Date(), Estudiante.State.INACTIVO);
-
-        // Crear instancias de Curso
-        Curso curso1 = new Curso();
-        curso1.setId(101);
-        curso1.setNombre("Matemáticas");
-        curso1.setDescripcion("Curso básico de matemáticas");
-        curso1.setNumeroCreditos(3);
-        curso1.setVersion(1);
-
-        Curso curso2 = new Curso();
-        curso2.setId(102);
-        curso2.setNombre("Literatura");
-        curso2.setDescripcion("Curso avanzado de literatura");
-        curso2.setNumeroCreditos(2);
-        curso2.setVersion(1);
-
-        // Instanciar GestorAcademico
         GestorAcademico gestor = new GestorAcademico();
 
-        try {
-            // Probar la inscripción de estudiantes y creación de cursos
-            gestor.matricularEstudiante(estudiante1);
-            gestor.agregarCurso(curso1);
-            gestor.inscribirEstudianteCurso(estudiante1, curso1.getId());
+        Scanner scanner = new Scanner(System.in);
 
-            // Repetir para el segundo estudiante y curso
-            gestor.matricularEstudiante(estudiante2);
-            gestor.agregarCurso(curso2);
-            gestor.inscribirEstudianteCurso(estudiante2, curso2.getId());
+        System.out.println("Bienvenido a tu gestor academico!");
+        while (true) {
+            System.out.println("Por favor, selecciona una opcion:");
+            System.out.println("1. Gestionar estudiantes");
+            System.out.println("2. Gestionar cursos");
+            System.out.println("3. Inscribir un estudiante a un curso");
+            System.out.println("4. Desinscribir un estudiante de un curso");
+            System.out.println("5. Salir");
+            System.out.println("");
 
-            // Desinscribir a un estudiante
-            gestor.desinscribirEstudianteCurso(estudiante1.getId(), curso1.getId());
+            int opcionPrincipal = scanner.nextInt();
+            scanner.nextLine();
 
-            // Mostrar estudiantes inscritos en un curso
-            System.out.println("Estudiantes inscritos en Matemáticas: " + gestor.obtenerEstudiantesIncritos(String.valueOf(curso1)));
+            switch (opcionPrincipal) {
+                case 1:
+                    System.out.println("1. Agregar un estudiante");
+                    System.out.println("2. Ver la lista de estudiantes");
+                    System.out.println("3. Salir");
 
-            // Mostrar cursos en los que está inscrito un estudiante
-            System.out.println("Cursos en los que está inscrito Juan Pérez: " + gestor.obtenerCursosDeEstudiante(estudiante1));
+                    int opcion2 = scanner.nextInt();
+                    scanner.nextLine();
 
-        } catch (Exceptions.EstudianteYaMatriculadoException | Exceptions.CursoYaCreadoException |
-                 Exceptions.EstudianteYaInscritoException | Exceptions.EstudianteNoInscritoException |
-                 Exceptions.CursoNoValidoException e) {
-            e.printStackTrace();
+                    switch (opcion2) {
+                        case 1:
+                            System.out.println("Ingrese el ID del estudiante:");
+                            int idEstudiante = scanner.nextInt();
+                            scanner.nextLine();
+
+                            System.out.println("Ingrese el nombre del estudiante:");
+                            String nombreEstudiante = scanner.nextLine();
+
+                            System.out.println("Ingrese el apellido del estudiante:");
+                            String apellidoEstudiante = scanner.nextLine();
+
+                            System.out.println("Ingrese la fecha de nacimiento del estudiante:");
+                            String fechaNacimientoEstudiante = scanner.nextLine();
+                            //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                            String fecha = fechaNacimientoEstudiante;
+
+                            Estudiante estudiante = new Estudiante(idEstudiante, nombreEstudiante, apellidoEstudiante, fecha);
+                            gestor.agregarEstudiante(estudiante);
+
+                            System.out.println("El estudiante " + nombreEstudiante + " ha sido agregado correctamente");
+                            break;
+
+                        case 2:
+                            System.out.println("Estudiantes:");
+                            for (Estudiante estudiante1 : gestor.getEstudiantes()) {
+                                System.out.println("- ID: " + estudiante1.getIdEstudiante());
+                                System.out.println("- Nombre: " + estudiante1.getNombrePersona());
+                                System.out.println("- Apellido: " + estudiante1.getApellidoPersona());
+                                System.out.println("- Fecha de Nacimiento: " + estudiante1.getFechaNacimientoPersona());
+                            }
+                            break;
+
+                        case 3:
+                            System.out.println("Saliendo del programa...");
+                            scanner.close();
+                            return;
+                        default:
+                            System.out.println("Opcion no valida. Intente de nuevo");
+                    }
+
+                case 2:
+                    System.out.println("1. Agregar un curso");
+                    System.out.println("2. Ver la lista de cursos");
+                    System.out.println("3. Salir");
+
+                    int opcion3 = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (opcion3) {
+                        case 1:
+                            System.out.println("Ingrese el ID del curso:");
+                            int idCurso = scanner.nextInt();
+                            scanner.nextLine();
+
+                            System.out.println("Ingrese el nombre del curso:");
+                            String nombreCurso = scanner.nextLine();
+
+                            System.out.println("Ingrese la descripcion del curso:");
+                            String descripcionCurso = scanner.nextLine();
+
+                            String creditos = String.valueOf(3);
+                            System.out.println("Los creditos de este curso son: " + creditos);
+
+                            String version = "1.0.0";
+                            System.out.println("La version de este curso es: " + version);
+
+                            System.out.println("El curso ha sido agregado correctamente");
+                            break;
+
+                        case 2:
+                            System.out.println("Cursos:");
+                            for (Curso curso1 : gestor.getCursos()) {
+                                System.out.println("- ID: " + curso1.getIdCurso());
+                                System.out.println("- Nombre: " + curso1.getNombreCurso());
+                                System.out.println("- Descripcion: " + curso1.getDescripcionCurso());
+                                System.out.println("- Creditos: " + curso1.getNumeroCreditos());
+                                System.out.println("- Version: " + curso1.getVersionCurso());
+                            }
+                            break;
+
+                        case 3:
+                            System.out.println("Saliendo del programa...");
+                            scanner.close();
+                            return;
+                        default:
+                            System.out.println("Opcion no valida. Intente de nuevo");
+                    }
+
+                case 3:
+                    System.out.println("Introduzca el ID del estudiante:");
+                    int idEstudianteParaInscribirACurso = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Introduce el ID del curso:");
+                    int idCursoParaInscribirACurso = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Estudiante estudianteParaInscribirACurso = gestor.obtenerEstudiantePorID(idEstudianteParaInscribirACurso);
+                    Curso curso = gestor.obtenerCursoPorID(idCursoParaInscribirACurso);
+
+                    if (estudianteParaInscribirACurso == null) {
+                        System.out.println("No se encontró un estudiante con el ID proporcionado.");
+                    } else if (curso == null) {
+                        System.out.println("No se encontró un curso con el ID proporcionado.");
+                    } else {
+                        try {
+                            gestor.inscribirEstudianteACurso(curso, estudianteParaInscribirACurso);
+                            System.out.println("El estudiante ha sido inscrito en el curso exitosamente.");
+                        } catch (EstudianteYaInscritoException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Introduce el ID del estudiante:");
+                    int idEstudianteParaDesinscribirACurso = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Introduce el ID del curso:");
+                    int idCursoParaDesinscribirACurso = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Estudiante estudianteParaDesinscribirACurso = gestor.obtenerEstudiantePorID(idEstudianteParaDesinscribirACurso);
+                    Curso cursoParaDesinscribirACurso = gestor.obtenerCursoPorID(idCursoParaDesinscribirACurso);
+
+                    if (estudianteParaDesinscribirACurso == null) {
+                        System.out.println("No se encontró un estudiante con el ID proporcionado.");
+                    } else if (cursoParaDesinscribirACurso == null) {
+                        System.out.println("No se encontró un curso con el ID proporcionado.");
+                    } else {
+                        try {
+                            gestor.desinscribirEstudianteACurso(cursoParaDesinscribirACurso, estudianteParaDesinscribirACurso);
+                            System.out.println("El estudiante ha sido desinscrito del curso exitosamente.");
+                        } catch (EstudianteNoInscritoEnCursoException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Saliendo del programa...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opcion no valida. Intente de nuevo");
+                    System.out.println("");
+            }
         }
     }
 }
