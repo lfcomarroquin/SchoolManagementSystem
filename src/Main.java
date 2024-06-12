@@ -24,6 +24,7 @@ public class Main {
                     System.out.println("1. Agregar un estudiante");
                     System.out.println("2. Ver la lista de estudiantes");
                     System.out.println("3. Salir");
+                    System.out.println("");
 
                     int opcion2 = scanner.nextInt();
                     scanner.nextLine();
